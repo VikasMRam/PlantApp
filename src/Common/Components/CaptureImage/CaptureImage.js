@@ -2,6 +2,8 @@ import React, { useRef, useState, useEffect } from "react";
 import Webcam from "react-webcam";
 import { Modal, Button } from "antd";
 import "./CaptureImage.scss";
+import * as tf from "@tensorflow/tfjs";
+import { loadGraphModel } from "@tensorflow/tfjs-converter";
 
 const videoConstraints = {
   facingMode: "environment",
@@ -18,7 +20,36 @@ function CaptureImage(props) {
   const webcamRef = useRef(null);
   const [imageSrc, setImageSrc] = useState(null);
   const [modalButtonProps, setmodalButtonProps] = useState(initialButtonProps);
+  const [model, setModel] = useState(null);
 
+  useEffect(() => {
+    const loadModel = async () => {
+      const model = await loadGraphModel(
+        "https://raw.githubusercontent.com/VikasMRam/PlantApp/main/model.json"
+      );
+      setModel(model);
+    };
+    tf.ready().then(() => {
+      loadModel();
+    });
+  }, []);
+
+  const predictImage = () => {
+    console.log("img");
+    // console.log(imageSrc)
+    try {
+      const img = document.getElementById("previewImage");
+      const tfImg = tf.browser.fromPixels(img);
+      const smalImg = tf.image.resizeBilinear(tfImg, [224, 224]);
+      const resized = tf.cast(smalImg, "float32");
+      const t4d = tf.tensor4d(Array.from(resized.dataSync()), [1, 224, 224, 3]);
+      console.log(
+        model.predict(t4d)
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  };
   const constructFooter = () => {
     if (!imageSrc) {
       return [
@@ -34,10 +65,10 @@ function CaptureImage(props) {
         <Button key="back" onClick={onCancelHandler}>
           Cancel
         </Button>,
-        <Button key="submit" type="default" onClick={() => setImageSrc(null)}>
+        <Button type="default" onClick={() => setImageSrc(null)}>
           Retake
         </Button>,
-        <Button key="submit" type="primary" onClick={capture}>
+        <Button type="primary" onClick={predictImage}>
           Predict Image
         </Button>,
       ];
@@ -62,9 +93,10 @@ function CaptureImage(props) {
     if (modalButtonProps.okButtonText === "Capture Image") {
       capture();
     } else if (modalButtonProps.okButtonText === "Predict Image") {
-      if (onCaptureHandler) {
-        onCaptureHandler(imageSrc);
-      }
+      // if (onCaptureHandler) {
+      //   onCaptureHandler(imageSrc);
+      // }
+      predictImage();
     }
   };
 
@@ -96,7 +128,7 @@ function CaptureImage(props) {
           <div className="previewImageContainer">
             <div className="message"> Is Image looks good?</div>
             <div className="previewImage">
-              <img src={imageSrc} />
+              <img src={imageSrc} id="previewImage" />
             </div>
           </div>
         )}
