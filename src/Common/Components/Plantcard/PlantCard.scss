@@ -1,0 +1,54 @@
+.plantCard {
+  // box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  min-width: 200px;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+  .plantCardImg {
+    width: 100%;
+    img {
+      height: 200px;
+      width: 100%;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+  }
+  .plantCardNameContainer {
+    border-radius: 8px;
+    padding: 10%;
+    background-color: white;
+    .plantCardName {
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .plantCardSubHeader {
+      font-size: 12px;
+      color: var(--color-secondary);
+    }
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .plantCard {
+    width: 100%;
+    .plantCardImg {
+      img {
+        height: 200px;
+      }
+    }
+    .plantCardNameContainer {
+      border-radius: 8px;
+      padding: 10%;
+      background-color: white;
+      .plantCardName {
+        font-size: 14px;
+        font-weight: 500;
+      }
+      .plantCardSubHeader {
+        font-size: 12px;
+        color: var(--color-secondary);
+      }
+    }
+  }
+}

@@ -1,0 +1,76 @@
+.plantDetailsContainer {
+  margin-top: 40px;
+  .plantDetailsMainContainer {
+    display: flex;
+    width: 80%;
+    max-width: 800px;
+    margin: auto;
+    .plantDetailsMainImage {
+      width: 25%;
+      height: 100%;
+      img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        border-radius: 8px;
+      }
+    }
+    .plantDetailsMainDescription {
+      width: calc(75% - 40px);
+      padding: 0px 20px;
+      .plantDetailsMainDescriptionName {
+        font-size: 24px;
+        color: var(--color-primary);
+      }
+      .plantDetailsMainDescriptionText {
+        margin-top: 20px;
+        font-size: 14px;
+        color: var(--color-secondary);
+      }
+      .plantDetailsUploadImageBtn {
+        margin-top: 20px;
+        max-width: 150px;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .plantDetailsContainer {
+    margin-top: 40px;
+    .plantDetailsMainContainer {
+      display: block;
+      width: 100%;
+      max-width: 400px;
+      .plantDetailsMainImage {
+        width: 100%;
+        height: 300px;
+        img {
+          height: 100%;
+          width: 100%;
+          object-fit: cover;
+          border-radius: 8px;
+        }
+      }
+      .plantDetailsMainDescription {
+        width: 100%;
+        padding: 0px;
+        .plantDetailsMainDescriptionName {
+          font-size: 20px;
+          margin-top: 20px;
+          color: var(--color-primary);
+        }
+        .plantDetailsMainDescriptionText {
+          margin-top: 20px;
+          font-size: 14px;
+          color: var(--color-secondary);
+        }
+        .plantDetailsUploadImageBtn {
+          margin-top: 20px;
+          width: 100%;
+          max-width: unset;
+        }
+      }
+    }
+  }
+}

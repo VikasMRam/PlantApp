@@ -1,0 +1,26 @@
+.allPlantsOuterContainer {
+  justify-content: space-between;
+  width: 100%;
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+  .allPlantsPlantCard {
+    margin: 15px;
+    width: calc(25% - 30px);
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .allPlantsOuterContainer {
+    justify-content: space-between;
+    width: 100%;
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    .allPlantsPlantCard {
+      margin: 5px;
+      width: 80%;
+    }
+  }
+}
