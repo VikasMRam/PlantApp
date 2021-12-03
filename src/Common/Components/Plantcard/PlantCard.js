@@ -5,12 +5,12 @@ import "./PlantCard.scss";
 
 function PlantCard(props) {
   const { plant } = props;
-  const { img, name, details } = plant;
+  const { img, name, details, id } = plant;
 
   const { navigate } = useContext(RouterContext);
-
+  const url = AppUrls.PLANT_DETAILS + "?id=" + id;
   return (
-    <div className="plantCard" onClick={()=>navigate(AppUrls.PLANT_DETAILS)}>
+    <div className="plantCard" onClick={() => navigate(url)}>
       <div className="plantCardImg">
         <img src={img} />
       </div>

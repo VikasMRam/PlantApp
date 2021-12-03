@@ -5,6 +5,8 @@ import "./CaptureImage.scss";
 import * as tf from "@tensorflow/tfjs";
 import { loadGraphModel } from "@tensorflow/tfjs-converter";
 
+const guava_classes = {0:"black_patch", 1:"dried", 2:"good_one", 3:"white_patch"}
+
 const videoConstraints = {
   facingMode: "environment",
   height: 200,
@@ -16,11 +18,12 @@ const initialButtonProps = {
 };
 
 function CaptureImage(props) {
-  const { onCaptureHandler, onCancelHandler } = props;
+  const { onCaptureHandler, onCancelHandler, onPredictionComplete } = props;
   const webcamRef = useRef(null);
   const [imageSrc, setImageSrc] = useState(null);
   const [modalButtonProps, setmodalButtonProps] = useState(initialButtonProps);
   const [model, setModel] = useState(null);
+  const [isPredicting, setIsPredicting] = useState(false);
 
   useEffect(() => {
     const loadModel = async () => {
@@ -37,6 +40,7 @@ function CaptureImage(props) {
   const predictImage = () => {
     console.log("img");
     // console.log(imageSrc)
+    setIsPredicting(true)
     try {
       const img = document.getElementById("previewImage");
       const tfImg = tf.browser.fromPixels(img);
@@ -46,8 +50,15 @@ function CaptureImage(props) {
       console.log(
         model.predict(t4d)
       );
+      const probabilities = model.predict(t4d)
+      const class_idx = tf.argMax(probabilities).dataSync()[0]
+      console.log(guava_classes[class_idx]);
+      onPredictionComplete(guava_classes[class_idx])
+      //return {classes[class_idx]: probabilities[class_idx]}
+      setIsPredicting(false)
     } catch (err) {
       console.log(err);
+      setIsPredicting(false)
     }
   };
   const constructFooter = () => {
@@ -56,7 +67,7 @@ function CaptureImage(props) {
         <Button key="back" onClick={onCancelHandler}>
           Cancel
         </Button>,
-        <Button key="submit" type="primary" onClick={capture}>
+        <Button key="submit" type="primary" onClick={capture} disabled={isPredicting}>
           Capture Image
         </Button>,
       ];
